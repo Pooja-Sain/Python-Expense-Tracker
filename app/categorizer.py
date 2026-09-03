@@ -1,7 +1,3 @@
-import pandas as pd
-
-df = pd.read_csv("transactions.csv")
-
 def categorize(description):
     description = description.upper()
     if "NETFLIX" in description or "SPOTIFY" in description:
@@ -11,22 +7,10 @@ def categorize(description):
     elif "UBER" in description or "SHELL" in description:
         return "Transport"
     elif "GYM" in description or "FITLIFE" in description:
-        return "Health and Fitness"
+        return "Health & Fitness"
     elif "PAYCHECK" in description:
         return "Income"
     elif "ELECTRIC" in description or "PGE" in description:
         return "Bills & Utilities"
     else:
         return "Other"
-
-
-df["category"] = df["description"].apply(categorize)
-print(df)
-
-# Detect recurring payments (same description + same amount appearing 2+ times)
-recurring = df[df.duplicated(subset=["description", "amount"], keep=False)]
-recurring_summary = recurring.groupby(["description", "amount"]).size().reset_index(name="count")
-
-print("\n--- Recurring Payments Detected ---")
-print(recurring_summary)
-
