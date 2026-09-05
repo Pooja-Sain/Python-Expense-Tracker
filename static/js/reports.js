@@ -1,7 +1,7 @@
 // Reports page bootstrap.
 import { getCategorySummary } from "./api.js";
 import { initExpenseModal } from "./modal.js";
-import { loadTrendChart } from "./charts.js";
+import { loadTrendChart, loadIncomeExpenseChart, loadCategoryPieChart } from "./charts.js";
 import { categoryMeta, formatINR } from "./categories.js";
 import { requireAuth } from "./auth.js";
 
@@ -31,6 +31,8 @@ async function loadCategoryTable() {
 
 function refreshReports() {
   loadTrendChart();
+  loadIncomeExpenseChart();
+  loadCategoryPieChart();
   loadCategoryTable();
 }
 

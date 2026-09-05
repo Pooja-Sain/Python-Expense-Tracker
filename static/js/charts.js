@@ -3,6 +3,8 @@ import { categoryMeta } from "./categories.js";
 
 let chartInstance = null;
 let trendChartInstance = null;
+let incomeExpenseChartInstance = null;
+let categoryPieChartInstance = null;
 
 // Bar chart of spending by category — used on the Dashboard page.
 export async function loadCategoryChart() {
@@ -26,6 +28,8 @@ export async function loadCategoryChart() {
       ],
     },
     options: {
+      responsive: true,
+      maintainAspectRatio: false,
       plugins: { legend: { display: false } },
       scales: {
         y: { beginAtZero: true },
@@ -58,8 +62,86 @@ export async function loadTrendChart() {
       ],
     },
     options: {
+      responsive: true,
+      maintainAspectRatio: false,
       plugins: { legend: { display: false } },
       scales: { y: { beginAtZero: true } },
+    },
+  });
+}
+
+// Grouped monthly Income vs Expenses bars — used on the Reports page.
+// monthly_trend (expenses) and monthly_income don't necessarily cover the
+// same set of months (e.g. a month with a salary deposit but no logged
+// expenses yet), so the label set is the union of both, sorted
+// chronologically, with 0 filled in wherever one side has no data.
+export async function loadIncomeExpenseChart() {
+  const data = await getAnalytics();
+  const months = Array.from(
+    new Set([...Object.keys(data.monthly_income), ...Object.keys(data.monthly_trend)]),
+  ).sort();
+  const incomeValues = months.map((m) => data.monthly_income[m] || 0);
+  const expenseValues = months.map((m) => data.monthly_trend[m] || 0);
+
+  const ctx = document.getElementById("incomeExpenseChart").getContext("2d");
+  if (incomeExpenseChartInstance) incomeExpenseChartInstance.destroy();
+  incomeExpenseChartInstance = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: months,
+      datasets: [
+        {
+          label: "Income",
+          data: incomeValues,
+          backgroundColor: "#059669",
+          borderRadius: 6,
+          maxBarThickness: 32,
+        },
+        {
+          label: "Expenses",
+          data: expenseValues,
+          backgroundColor: "#ef4444",
+          borderRadius: 6,
+          maxBarThickness: 32,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: true, position: "top", align: "end" } },
+      scales: { y: { beginAtZero: true } },
+    },
+  });
+}
+
+// Category breakdown doughnut — a visual companion to the category table,
+// used on the Reports page.
+export async function loadCategoryPieChart() {
+  const data = await getCategorySummary();
+  const entries = Object.entries(data).sort((a, b) => b[1] - a[1]);
+  const labels = entries.map(([name]) => name);
+  const values = entries.map(([, amount]) => amount);
+
+  const ctx = document.getElementById("categoryPieChart").getContext("2d");
+  if (categoryPieChartInstance) categoryPieChartInstance.destroy();
+  categoryPieChartInstance = new Chart(ctx, {
+    type: "doughnut",
+    data: {
+      labels,
+      datasets: [
+        {
+          data: values,
+          backgroundColor: labels.map((l) => categoryMeta(l).color),
+          borderWidth: 2,
+          borderColor: "#ffffff",
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { position: "right", labels: { boxWidth: 12, padding: 12 } } },
     },
   });
 }

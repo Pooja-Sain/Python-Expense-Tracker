@@ -166,6 +166,70 @@ body {
   border-color: rgba(255, 255, 255, 0.4);
 }
 
+.btn-file {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+}
+
+.btn-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.import-status {
+  font-size: 13px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin: 0 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.import-status-loading {
+  background: rgba(99, 102, 241, 0.1);
+  color: #4338ca;
+}
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.7s linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-row td {
+  text-align: center;
+  color: var(--muted);
+  padding: 24px 0;
+}
+
+.loading-row .spinner {
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.import-status-ok {
+  background: rgba(16, 185, 129, 0.12);
+  color: #047857;
+}
+
+.import-status-error {
+  background: rgba(239, 68, 68, 0.12);
+  color: #b91c1c;
+}
+
 /* Layout */
 .dashboard {
   max-width: 1100px;
@@ -269,10 +333,39 @@ body {
   color: var(--expense);
 }
 
+.section-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0 0 12px;
+}
+
+.section-heading h3 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.section-heading .muted {
+  font-size: 13px;
+}
+
+.month-cards {
+  margin-bottom: 24px;
+}
+
 /* Charts */
 .chart-wrap {
   position: relative;
   height: 260px;
+  /* Belt-and-suspenders: Chart.js is told maintainAspectRatio: false so its
+     canvas fills this box exactly, but if that option is ever missing on a
+     chart, this keeps it from silently overflowing into the next panel
+     instead of just clipping (which is easy to spot and fix). */
+  overflow: hidden;
 }
 
 .chart-wrap.tall {
@@ -441,6 +534,20 @@ td.income {
   font-weight: 400;
   font-size: 12px;
   color: var(--muted);
+}
+
+.sub-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.sub-next {
+  margin: 0;
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
 }
 
 /* Category breakdown table (Reports) */

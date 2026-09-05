@@ -36,6 +36,7 @@
     </header>
 
     <main class="dashboard">
+      <div class="section-heading"><h3>All-Time</h3></div>
       <section class="summary-cards">
         <div class="card">
           <div class="card-icon income-bg">↓</div>
@@ -56,6 +57,34 @@
           <div>
             <p class="card-label">Balance</p>
             <p class="card-value" id="balance">₹0</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-heading">
+        <h3>This Month</h3>
+        <span class="muted" id="current-month-label"></span>
+      </div>
+      <section class="summary-cards month-cards">
+        <div class="card">
+          <div class="card-icon income-bg">↓</div>
+          <div>
+            <p class="card-label">Income</p>
+            <p class="card-value income" id="month-income">₹0</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon expense-bg">↑</div>
+          <div>
+            <p class="card-label">Expenses</p>
+            <p class="card-value expense" id="month-expenses">₹0</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon balance-bg">₹</div>
+          <div>
+            <p class="card-label">Net Savings</p>
+            <p class="card-value" id="month-balance">₹0</p>
           </div>
         </div>
       </section>

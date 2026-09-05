@@ -35,3 +35,27 @@ export async function getAnalytics() {
   const res = await fetch("/summary/analytics");
   return res.json();
 }
+
+export async function getMonthlySummary() {
+  const res = await fetch("/summary/monthly");
+  return res.json();
+}
+
+export async function getRecurringPayments() {
+  const res = await fetch("/summary/recurring");
+  return res.json();
+}
+
+export async function importTransactionsCSV(file) {
+  const formData = new FormData();
+  formData.append("file", file);
+  const res = await fetch("/transactions/import", {
+    method: "POST",
+    body: formData,
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(data.detail || "Import failed");
+  }
+  return data;
+}

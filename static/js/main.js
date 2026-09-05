@@ -1,12 +1,13 @@
 // Dashboard page bootstrap.
 import { initExpenseModal } from "./modal.js";
-import { loadSummary } from "./summary.js";
+import { loadSummary, loadMonthlySummary } from "./summary.js";
 import { loadCategoryChart } from "./charts.js";
 import { loadInsights } from "./insights.js";
 import { requireAuth } from "./auth.js";
 
 function refreshDashboard() {
   loadSummary();
+  loadMonthlySummary();
   loadCategoryChart();
   loadInsights();
 }

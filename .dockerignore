@@ -3,5 +3,8 @@ __pycache__/
 *.pyc
 .env
 *.csv
-Claude outputs/
 *.db
+Claude outputs/
+.git/
+.github/
+tests/

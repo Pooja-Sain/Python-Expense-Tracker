@@ -44,18 +44,33 @@
       </section>
 
       <section class="panel">
-        <h2>Spending by Category</h2>
-        <div class="table-wrap">
-          <table id="category-table">
-            <thead>
-              <tr>
-                <th>Category</th>
-                <th>Amount</th>
-                <th>Share of spend</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
+        <h2>Income vs Expenses</h2>
+        <div class="chart-wrap tall">
+          <canvas id="incomeExpenseChart"></canvas>
+        </div>
+      </section>
+
+      <section class="grid-2">
+        <div class="panel">
+          <h2>Spending by Category</h2>
+          <div class="table-wrap">
+            <table id="category-table">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Amount</th>
+                  <th>Share of spend</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>Category Breakdown</h2>
+          <div class="chart-wrap">
+            <canvas id="categoryPieChart"></canvas>
+          </div>
         </div>
       </section>
     </main>
