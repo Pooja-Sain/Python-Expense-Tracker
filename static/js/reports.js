@@ -3,6 +3,7 @@ import { getCategorySummary } from "./api.js";
 import { initExpenseModal } from "./modal.js";
 import { loadTrendChart } from "./charts.js";
 import { categoryMeta, formatINR } from "./categories.js";
+import { requireAuth } from "./auth.js";
 
 async function loadCategoryTable() {
   const data = await getCategorySummary();
@@ -33,6 +34,13 @@ function refreshReports() {
   loadCategoryTable();
 }
 
-initExpenseModal();
-refreshReports();
-document.addEventListener("expense:added", refreshReports);
+async function init() {
+  const user = await requireAuth();
+  if (!user) return;
+
+  initExpenseModal();
+  refreshReports();
+  document.addEventListener("expense:added", refreshReports);
+}
+
+init();

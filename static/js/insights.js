@@ -5,12 +5,12 @@ import { formatINR } from "./categories.js";
 export async function loadInsights() {
   const [analytics, txs] = await Promise.all([getAnalytics(), getTransactions()]);
 
-  document.getElementById("top-category").textContent = analytics.top_category;
-  document.getElementById("top-category-amount").textContent = formatINR(
-    analytics.top_category_amount,
-    0,
-  );
-  document.getElementById("biggest-expense").textContent =
-    `${analytics.biggest_expense.description} (${formatINR(analytics.biggest_expense.amount, 0)})`;
+  document.getElementById("top-category").textContent = analytics.top_category || "—";
+  document.getElementById("top-category-amount").textContent = analytics.top_category
+    ? formatINR(analytics.top_category_amount, 0)
+    : "—";
+  document.getElementById("biggest-expense").textContent = analytics.biggest_expense
+    ? `${analytics.biggest_expense.description} (${formatINR(analytics.biggest_expense.amount, 0)})`
+    : "—";
   document.getElementById("quick-stats").textContent = `${txs.length}`;
 }

@@ -6,6 +6,7 @@
 import { getTransactions } from "./api.js";
 import { initExpenseModal } from "./modal.js";
 import { categoryMeta, formatINR } from "./categories.js";
+import { requireAuth } from "./auth.js";
 
 export async function loadSubscriptions() {
   const data = await getTransactions();
@@ -63,6 +64,13 @@ export async function loadSubscriptions() {
   });
 }
 
-initExpenseModal();
-loadSubscriptions();
-document.addEventListener("expense:added", loadSubscriptions);
+async function init() {
+  const user = await requireAuth();
+  if (!user) return;
+
+  initExpenseModal();
+  loadSubscriptions();
+  document.addEventListener("expense:added", loadSubscriptions);
+}
+
+init();

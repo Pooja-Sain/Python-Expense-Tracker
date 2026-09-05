@@ -1,21 +1,20 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from app.database import SessionLocal
-from app.models import Transaction
+
 from app.analytics import compute_analytics
+from app.auth import get_current_user
+from app.database import get_db
+from app.models import Transaction, User
 
 router = APIRouter(prefix="/summary", tags=["summary"])
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 @router.get("/overview")
-def get_overview(db: Session = Depends(get_db)):
-    transactions = db.query(Transaction).all()
+def get_overview(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    transactions = db.query(Transaction).filter(Transaction.user_id == current_user.id).all()
     total_income = sum(t.amount for t in transactions if t.amount > 0)
     total_expenses = sum(abs(t.amount) for t in transactions if t.amount < 0)
     return {
@@ -24,14 +23,23 @@ def get_overview(db: Session = Depends(get_db)):
         "balance": round(total_income - total_expenses, 2)
     }
 
+
 @router.get("/category")
-def get_category_summary(db: Session = Depends(get_db)):
-    transactions = db.query(Transaction).filter(Transaction.category != "Income").all()
+def get_category_summary(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    transactions = (
+        db.query(Transaction)
+        .filter(Transaction.user_id == current_user.id, Transaction.category != "Income")
+        .all()
+    )
     summary = {}
     for t in transactions:
         summary[t.category] = summary.get(t.category, 0) + abs(t.amount)
     return summary
 
+
 @router.get("/analytics")
-def get_analytics():
-    return compute_analytics()
+def get_analytics(current_user: User = Depends(get_current_user)):
+    return compute_analytics(current_user.id)

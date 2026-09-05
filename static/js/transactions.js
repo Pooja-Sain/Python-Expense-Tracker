@@ -2,6 +2,7 @@
 import { getTransactions, updateTransactionCategory } from "./api.js";
 import { initExpenseModal } from "./modal.js";
 import { categoryNames, categoryMeta, formatINR } from "./categories.js";
+import { requireAuth } from "./auth.js";
 
 export async function loadTransactions() {
   const data = await getTransactions();
@@ -45,6 +46,13 @@ export async function loadTransactions() {
   });
 }
 
-initExpenseModal();
-loadTransactions();
-document.addEventListener("expense:added", loadTransactions);
+async function init() {
+  const user = await requireAuth();
+  if (!user) return;
+
+  initExpenseModal();
+  loadTransactions();
+  document.addEventListener("expense:added", loadTransactions);
+}
+
+init();

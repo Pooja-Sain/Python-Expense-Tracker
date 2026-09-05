@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Log In — KharchaTrack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <script type="module" src="/static/js/login.js"></script>
+  </head>
+  <body class="auth-body">
+    <div class="auth-card">
+      <a href="/" class="brand auth-brand">
+        <span class="brand-icon">💰</span>
+        <h1>KharchaTrack</h1>
+      </a>
+
+      <h2 class="auth-title">Welcome back</h2>
+      <p class="auth-subtitle">Log in to see where your money went.</p>
+
+      <p id="auth-error" class="auth-error hidden"></p>
+
+      <form id="login-form" class="auth-form">
+        <label>
+          Email
+          <input type="email" id="email" placeholder="you@example.com" required />
+        </label>
+        <label>
+          Password
+          <input type="password" id="password" placeholder="••••••••" required minlength="6" />
+        </label>
+        <button type="submit" class="btn-primary btn-block">Log In</button>
+      </form>
+
+      <p class="auth-footer">
+        New here? <a href="/signup">Create an account</a>
+      </p>
+    </div>
+  </body>
+</html>

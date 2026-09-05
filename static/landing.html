@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KharchaTrack — Track your money, simply</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <script type="module" src="/static/js/landing.js"></script>
+  </head>
+  <body class="landing-body">
+    <header class="landing-nav">
+      <div class="brand">
+        <span class="brand-icon">💰</span>
+        <div>
+          <h1>KharchaTrack</h1>
+        </div>
+      </div>
+      <div class="landing-nav-actions">
+        <a href="/login" id="nav-login" class="nav-link-plain">Log In</a>
+        <a href="/signup" class="btn-primary" data-cta>Sign Up Free</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">Free · No ads · Built for India</span>
+          <h2>Your money, tracked simply.</h2>
+          <p>
+            Log expenses in seconds, see exactly where your money goes, and catch recurring
+            subscriptions before they quietly add up — all in one clean dashboard.
+          </p>
+          <div class="hero-actions">
+            <a href="/signup" class="btn-primary btn-large" data-cta>Get Started Free</a>
+            <a href="/login" class="btn-secondary btn-large">Log In</a>
+          </div>
+        </div>
+
+        <div class="hero-preview" aria-hidden="true">
+          <div class="preview-window">
+            <div class="preview-titlebar">
+              <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span>
+            </div>
+            <div class="preview-body">
+              <div class="preview-cards">
+                <div class="preview-card">
+                  <p class="preview-label">Income</p>
+                  <p class="preview-value" style="color: #059669">₹52,000</p>
+                </div>
+                <div class="preview-card">
+                  <p class="preview-label">Expenses</p>
+                  <p class="preview-value" style="color: #ef4444">₹31,480</p>
+                </div>
+                <div class="preview-card">
+                  <p class="preview-label">Balance</p>
+                  <p class="preview-value">₹20,520</p>
+                </div>
+              </div>
+              <div class="preview-chart">
+                <div class="preview-bar" style="height: 90%; background: #ef4444"></div>
+                <div class="preview-bar" style="height: 65%; background: #f59e0b"></div>
+                <div class="preview-bar" style="height: 48%; background: #3b82f6"></div>
+                <div class="preview-bar" style="height: 30%; background: #8b5cf6"></div>
+                <div class="preview-bar" style="height: 20%; background: #10b981"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="features">
+        <h3 class="section-title">Everything you need, nothing you don't</h3>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🏷️</div>
+            <h4>Auto-categorized</h4>
+            <p>Expenses are tagged into categories automatically as you add them — no manual sorting.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h4>Visual reports</h4>
+            <p>Spending-by-category and monthly trend charts show you exactly where your money goes.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔁</div>
+            <h4>Subscription tracking</h4>
+            <p>Recurring charges like Netflix and Spotify are grouped together so nothing sneaks by unnoticed.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">₹</div>
+            <h4>Built for ₹</h4>
+            <p>Amounts are formatted in Indian Rupees from the ground up — no awkward currency conversions.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h4>Private by default</h4>
+            <p>Your data lives behind your own account — nobody else can see your transactions.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h4>Fast to log</h4>
+            <p>Adding an expense takes one modal and a few seconds — from anywhere in the app.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-band">
+        <h3>Start tracking in under a minute.</h3>
+        <a href="/signup" class="btn-primary btn-large" data-cta>Create your free account</a>
+      </section>
+    </main>
+
+    <footer class="landing-footer">
+      <p>KharchaTrack — a personal expense tracker.</p>
+    </footer>
+  </body>
+</html>

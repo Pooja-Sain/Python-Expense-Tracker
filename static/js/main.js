@@ -3,6 +3,7 @@ import { initExpenseModal } from "./modal.js";
 import { loadSummary } from "./summary.js";
 import { loadCategoryChart } from "./charts.js";
 import { loadInsights } from "./insights.js";
+import { requireAuth } from "./auth.js";
 
 function refreshDashboard() {
   loadSummary();
@@ -10,6 +11,13 @@ function refreshDashboard() {
   loadInsights();
 }
 
-initExpenseModal();
-refreshDashboard();
-document.addEventListener("expense:added", refreshDashboard);
+async function init() {
+  const user = await requireAuth();
+  if (!user) return; // requireAuth already redirected to /login
+
+  initExpenseModal();
+  refreshDashboard();
+  document.addEventListener("expense:added", refreshDashboard);
+}
+
+init();
