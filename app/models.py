@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 
 from app.database import Base
@@ -28,3 +28,18 @@ class Transaction(Base):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
 
     owner = relationship("User", back_populates="transactions")
+
+
+class Budget(Base):
+    """A monthly spending limit for one category, per user. Not defined for
+    "Income" -- a budget caps spending, it doesn't make sense to cap what
+    comes in."""
+    __tablename__ = "budgets"
+    __table_args__ = (UniqueConstraint("user_id", "category", name="uq_budget_user_category"),)
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    category = Column(String, nullable=False)
+    monthly_limit = Column(Float, nullable=False)
+
+    owner = relationship("User")

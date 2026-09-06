@@ -357,6 +357,64 @@ body {
   margin-bottom: 24px;
 }
 
+/* Budgets panel (Dashboard) */
+.budget-row {
+  margin-bottom: 16px;
+}
+
+.budget-row:last-child {
+  margin-bottom: 0;
+}
+
+.budget-row-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.budget-category {
+  font-weight: 600;
+}
+
+.budget-amounts {
+  font-weight: 600;
+}
+
+.budget-text-ok {
+  color: var(--income);
+}
+.budget-text-warning {
+  color: #b45309;
+}
+.budget-text-over {
+  color: var(--expense);
+}
+
+.budget-bar-track {
+  height: 8px;
+  background: #f1f5f9;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.budget-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.2s ease;
+}
+
+.budget-fill-ok {
+  background: var(--income);
+}
+.budget-fill-warning {
+  background: #f59e0b;
+}
+.budget-fill-over {
+  background: var(--expense);
+}
+
 /* Charts */
 .chart-wrap {
   position: relative;

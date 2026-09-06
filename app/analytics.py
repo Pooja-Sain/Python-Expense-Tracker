@@ -156,3 +156,68 @@ def detect_recurring_payments(user_id: int) -> list:
         params={"user_id": user_id},
     )
     return _detect_recurring_from_df(df)
+
+
+def _compute_category_spend_from_df(df: pd.DataFrame, month: str) -> dict:
+    """This month's total spend per category (expenses only), pure logic
+    split out for testing. Returns {category: amount spent}; a category with
+    no expenses this month is simply absent rather than present at 0, so the
+    caller can tell "not spent on yet" apart from "spent exactly 0"."""
+    if df.empty:
+        return {}
+
+    df = df.copy()
+    df["date"] = pd.to_datetime(df["date"])
+    month_df = df[(df["date"].dt.strftime("%Y-%m") == month) & (df["amount"] < 0)]
+    if month_df.empty:
+        return {}
+
+    return month_df.groupby("category")["amount"].apply(lambda s: round(float(s.abs().sum()), 2)).to_dict()
+
+
+def _build_budget_status(budgets: dict, spend_by_category: dict) -> list:
+    """Pure logic combining {category: monthly_limit} with {category: spent
+    this month} into the shape the Dashboard budget bars need, split out from
+    compute_budget_status so it can be unit tested without a real database.
+    Only categories that actually have a budget set are returned (there's
+    nothing to show a bar for otherwise), sorted so the category closest to
+    (or furthest past) its limit is shown first."""
+    results = []
+    for category, limit in budgets.items():
+        limit = float(limit)
+        spent = round(float(spend_by_category.get(category, 0.0)), 2)
+        percentage = round((spent / limit) * 100, 1) if limit > 0 else 0.0
+        results.append({
+            "category": category,
+            "monthly_limit": round(limit, 2),
+            "spent": spent,
+            "remaining": round(limit - spent, 2),
+            "percentage": percentage,
+        })
+
+    results.sort(key=lambda r: r["percentage"], reverse=True)
+    return results
+
+
+def compute_budget_status(user_id: int) -> list:
+    """This month's spending against each category's configured budget, for
+    the Dashboard's Budgets panel."""
+    budgets_df = pd.read_sql(
+        "SELECT category, monthly_limit FROM budgets WHERE user_id = :user_id",
+        engine,
+        params={"user_id": user_id},
+    )
+    if budgets_df.empty:
+        return []
+
+    budgets = dict(zip(budgets_df["category"], budgets_df["monthly_limit"]))
+
+    df = pd.read_sql(
+        "SELECT * FROM transactions WHERE user_id = :user_id",
+        engine,
+        params={"user_id": user_id},
+    )
+    current_month = datetime.now(timezone.utc).strftime("%Y-%m")
+    spend_by_category = _compute_category_spend_from_df(df, current_month)
+
+    return _build_budget_status(budgets, spend_by_category)

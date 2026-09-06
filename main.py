@@ -7,7 +7,7 @@ from sqlalchemy import inspect, text
 from starlette.middleware.sessions import SessionMiddleware
 
 from app.database import Base, engine
-from app.routers import auth, summary, transactions
+from app.routers import auth, budgets, summary, transactions
 
 # Make sure every table (including the new "users" table) exists. This
 # project doesn't use a migration tool like Alembic, so it's handled here
@@ -58,6 +58,7 @@ async def no_cache_for_static(request: Request, call_next):
 app.include_router(auth.router)
 app.include_router(transactions.router)
 app.include_router(summary.router)
+app.include_router(budgets.router)
 
 
 @app.get("/")

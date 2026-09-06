@@ -63,6 +63,35 @@ export async function getRecurringPayments() {
   return res.json();
 }
 
+export async function getBudgets() {
+  const res = await fetch("/budgets");
+  return res.json();
+}
+
+export async function setBudget(category, monthlyLimit) {
+  const res = await fetch(`/budgets/${encodeURIComponent(category)}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ monthly_limit: monthlyLimit }),
+  });
+  const result = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(result.detail || "Couldn't save that budget");
+  }
+  return result;
+}
+
+export async function deleteBudget(category) {
+  const res = await fetch(`/budgets/${encodeURIComponent(category)}`, { method: "DELETE" });
+  // A 404 here just means there was nothing set for this category yet --
+  // harmless when the caller is clearing a field that was already empty.
+  if (!res.ok && res.status !== 404) {
+    const result = await res.json().catch(() => ({}));
+    throw new Error(result.detail || "Couldn't remove that budget");
+  }
+  return res.json().catch(() => ({}));
+}
+
 export async function importTransactionsCSV(file) {
   const formData = new FormData();
   formData.append("file", file);
