@@ -457,6 +457,16 @@ td.income {
   -webkit-appearance: none;
 }
 
+.row-actions {
+  display: flex;
+  gap: 2px;
+  white-space: nowrap;
+}
+
+.row-actions .btn-icon {
+  font-size: 15px;
+}
+
 .muted {
   color: var(--muted);
 }

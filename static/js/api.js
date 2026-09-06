@@ -12,13 +12,30 @@ export async function createTransaction(data) {
   return res.json();
 }
 
-export async function updateTransactionCategory(id, category) {
+export async function updateTransaction(id, data) {
   const res = await fetch(`/transactions/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ category }),
+    body: JSON.stringify(data),
   });
-  return res.json();
+  const result = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(result.detail || "Update failed");
+  }
+  return result;
+}
+
+export async function updateTransactionCategory(id, category) {
+  return updateTransaction(id, { category });
+}
+
+export async function deleteTransaction(id) {
+  const res = await fetch(`/transactions/${id}`, { method: "DELETE" });
+  if (!res.ok) {
+    const result = await res.json().catch(() => ({}));
+    throw new Error(result.detail || "Delete failed");
+  }
+  return res.json().catch(() => ({}));
 }
 
 export async function getCategorySummary() {

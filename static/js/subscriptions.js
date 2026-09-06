@@ -50,7 +50,7 @@ async function init() {
 
   initExpenseModal();
   loadSubscriptions();
-  document.addEventListener("expense:added", loadSubscriptions);
+  document.addEventListener("transactions:changed", loadSubscriptions);
 }
 
 init();

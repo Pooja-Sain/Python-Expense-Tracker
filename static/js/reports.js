@@ -42,7 +42,7 @@ async function init() {
 
   initExpenseModal();
   refreshReports();
-  document.addEventListener("expense:added", refreshReports);
+  document.addEventListener("transactions:changed", refreshReports);
 }
 
 init();

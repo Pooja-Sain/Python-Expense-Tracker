@@ -18,7 +18,7 @@ async function init() {
 
   initExpenseModal();
   refreshDashboard();
-  document.addEventListener("expense:added", refreshDashboard);
+  document.addEventListener("transactions:changed", refreshDashboard);
 }
 
 init();

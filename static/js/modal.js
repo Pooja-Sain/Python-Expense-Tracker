@@ -1,8 +1,11 @@
 import { createTransaction } from "./api.js";
 
-// Shared "Add Expense" modal, wired up on every page. On success it fires an
-// "expense:added" event on `document` so each page can refresh its own view
-// without every page needing to know about every other page's data.
+// Shared "Add Expense" modal, wired up on every page. On success it fires a
+// "transactions:changed" event on `document` so each page can refresh its
+// own view without every page needing to know about every other page's data.
+// The same event is fired after an edit, delete, or CSV import (see
+// transactions.js) since all of them mean "the transaction set changed"
+// just as much as adding one does.
 export function initExpenseModal() {
   const modal = document.getElementById("expense-form-section");
   if (!modal) return;
@@ -36,6 +39,6 @@ export function initExpenseModal() {
       await createTransaction(newExpense);
       document.getElementById("expense-form").reset();
       closeModal();
-      document.dispatchEvent(new CustomEvent("expense:added"));
+      document.dispatchEvent(new CustomEvent("transactions:changed"));
     });
 }

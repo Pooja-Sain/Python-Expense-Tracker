@@ -8,7 +8,7 @@ from app.auth import get_current_user
 from app.categorizer import categorize
 from app.database import get_db
 from app.models import Transaction, User
-from app.schemas.transactions import CategoryUpdate, TransactionCreate
+from app.schemas.transactions import TransactionCreate, TransactionUpdate
 
 router = APIRouter(prefix="/transactions", tags=["transactions"])
 
@@ -56,9 +56,36 @@ def create_transaction(
 
 
 @router.patch("/{transaction_id}")
-def update_category(
+def update_transaction(
     transaction_id: int,
-    update: CategoryUpdate,
+    update: TransactionUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Corrects a transaction. Used two ways: the category dropdown on the
+    Transactions table sends just {"category": ...} for a quick recategorize,
+    and the Edit modal sends date/description/amount/category together to
+    fix a wrongly-entered transaction. exclude_unset=True means a field left
+    out of the request body is left untouched rather than wiped to null."""
+    transaction = (
+        db.query(Transaction)
+        .filter(Transaction.id == transaction_id, Transaction.user_id == current_user.id)
+        .first()
+    )
+    if not transaction:
+        raise HTTPException(status_code=404, detail="Transaction not found")
+
+    for field, value in update.dict(exclude_unset=True).items():
+        setattr(transaction, field, value)
+
+    db.commit()
+    db.refresh(transaction)
+    return transaction
+
+
+@router.delete("/{transaction_id}")
+def delete_transaction(
+    transaction_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
@@ -69,10 +96,10 @@ def update_category(
     )
     if not transaction:
         raise HTTPException(status_code=404, detail="Transaction not found")
-    transaction.category = update.category
+
+    db.delete(transaction)
     db.commit()
-    db.refresh(transaction)
-    return transaction
+    return {"deleted": transaction_id}
 
 
 @router.post("/import")
